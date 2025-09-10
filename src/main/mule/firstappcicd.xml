@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="8046f699-8b50-4ce1-93ee-e1ea812c83d1" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="firstappcicdFlow" doc:id="d13c2d79-5255-417a-8f8d-541fe2395d27" >
+		<http:listener doc:name="Listener" doc:id="6ea1a05e-8e2f-4f9d-a15a-dec1ddb02ceb" config-ref="HTTP_Listener_config" path="/welcome"/>
+		<ee:transform doc:name="Transform Message" doc:id="85978b4d-1caf-4383-bd52-458c2a36d605">
+			<ee:message>
+				<ee:set-payload><![CDATA["Welcome to Mulesoft CICD"]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="548d614c-3a58-4c8e-8a66-c3c9ab1cdfd1" message='"Welcome to Mulesoft CICD"'/>
+	</flow>
+</mule>
