@@ -22,7 +22,7 @@ jobs:
     - uses: actions/cache@v4
       with:
         path: ~/.m2/repository
-        key: $ {{runner.os}}-maven-${{hasFIles('**/pom.xml') }}
+        key: $ {{runner.os}}-maven-${{hasFiles('**/pom.xml') }}
         restor-key: |
           ${{ runner.os }} -maven-
     - name: Set up JDK 17
@@ -50,7 +50,7 @@ jobs:
     - uses: actions/cache@v4
       with:
         path: ~/.m2/repository
-        key: $ {{runner.os}}-maven-${{hasFIles('**/pom.xml') }}
+        key: $ {{runner.os}}-maven-${{hasFiles('**/pom.xml') }}
         restor-key: |
           ${{ runner.os }}-maven-
     - uses: actions/download-artifact@master
