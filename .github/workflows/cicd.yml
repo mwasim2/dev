@@ -36,22 +36,17 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - name: List target directory contents
-      run: ls -l target/
-
-    - name: Stamp artifact file name with commit hash
+    - name: stamp artifact file name with commit hash
       run: |
         artifactName1=$(ls target/*.jar | head -1)
         commitHash=$(git rev-parse --short "$GITHUB_SHA")
-        artifactName2=$(echo "$artifactName1" | sed "s/.jar/.$commitHash.jar/")
-        mv "$artifactName1" "$artifactName2"
-        echo "Renamed artifact to: $artifactName2"
+        artifactName2=$(ls target/*.jar | head -1 | sed "s/.jar/.$commitHash.jar/g")
+        mv $artifactName1 $artifactName2
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@master
       with:
         name: artifacts
-        path: target/*.$(git rev-parse --short "$GITHUB_SHA").jar
+        path: target/*.jar
 
   deploy:
     needs: build
@@ -66,15 +61,14 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-maven-
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@master
       with:
         name: artifacts
 
     - name: Deploy to cloudhub sandbox env
       env:
-        anypointUsername: ${{ secrets.ANYPOINT_USERNAME }}
-        anypointPassword: ${{ secrets.ANYPOINT_PASSWORD }}
+        anypointUsername: ${{secrets.ANYPOINT_USERNAME}}
+        anypointPassword: ${{secrets.ANYPOINT_PASSWORD}}
       run: |
         artifactName=$(ls *.jar | head -1)
-        echo "Deploying artifact: $artifactName"
-        mvn deploy -DmuleDeploy -Dmule.artifact="$artifactName" -Danypoint.username="$anypointUsername" -Danypoint.password="$anypointPassword" -DworkerType=MICRO -Dworkers=1 -Dregion=Cloudhub-EU-Central-1 -Denvironment=SANDBOX -Dcloudhub.application.name=firstapp
+        mvn deploy -DmuleDeploy -Dmule.artifact=$artifactName -Danypoint.username="$anypointUsername" -Danypoint.password="$anypointPassword" -DworkerType=MICRO -Dworkers=1 -Dregion=Cloudhub-EU-Central-1 -Denvironment=SANDBOX -Dcloudhub.application.name=firstapp
