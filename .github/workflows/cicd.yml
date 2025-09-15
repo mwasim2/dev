@@ -71,4 +71,4 @@ jobs:
         anypointPassword: "Mulesoft@1234"
       run: |
         artifactName=$(ls *.jar | head -1)
-        mvn deploy -DmuleDeploy -Dmule.artifact=$artifactName -Danypoint.username="$anypointUsername" -Danypoint.password="$anypointPassword" -DworkerType=MICRO -Dworkers=1 -Dregion=Cloudhub-EU-Central-1 -Denvironment=SANDBOX -Dcloudhub.application.name=firstapp
+        mvn deploy -DmuleDeploy -Dmule.artifact=$artifactName -Danypoint.username="$anypointUsername" -Danypoint.password="$anypointPassword" -DworkerType=MICRO -Dworkers=1 -Dregion=Cloudhub-EU-Central-1 -Denvironment=Sandbox -Dcloudhub.application.name=firstapp
